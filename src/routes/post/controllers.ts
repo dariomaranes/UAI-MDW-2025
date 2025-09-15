@@ -28,7 +28,12 @@ const createPost = async (req: Request, res: Response) => {
 
 const getAllPosts = async (req: Request, res: Response) => {
   try {
-    const posts = await Post.find().populate('author', 'name lastName email');
+    const { title } = req.query;
+    let filter = {};
+    if (title) {
+      filter = { title: { $regex: title as string, $options: 'i' } };
+    }
+    const posts = await Post.find(filter).populate('author', 'name lastName email');
     res.status(200).json({
       message: "Posts fetched successfully",
       data: posts,
@@ -56,7 +61,6 @@ const updatePost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { title, content } = req.body;
-    const { email } = req.query;
     const post = await Post.findByIdAndUpdate(id, { title, content }, { new: true });
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
