@@ -18,6 +18,11 @@ const userSchema = new Schema(
     isActive: {
       type: Boolean,
       default: true
+    },
+    firebaseUid: {
+      type: String,
+      required: false,
+      unique: true
     }
   },
   {
