@@ -15,6 +15,10 @@ const postSchema = new Schema(
       ref: "User",
       required: true
     },
+    isActive: {
+      type: Boolean,
+      default: true
+    }
   },
   {
     timestamps: true,
